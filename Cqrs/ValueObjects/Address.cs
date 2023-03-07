@@ -1,0 +1,10 @@
+﻿namespace Cqrs.ValueObjects
+{
+    public class Addres
+    {
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+    }
+}

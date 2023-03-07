@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Cqrs.ValueObjects;
+using MediatR;
 
 namespace Cqrs.PersonFeatures.Command.Add.CreatePersonCommand
 {
@@ -11,5 +12,6 @@ namespace Cqrs.PersonFeatures.Command.Add.CreatePersonCommand
         public string Email { get; set; }
         public string Password { get; set; }
         public string RepeatPassword { get; set; }
+        public Addres addres { get; set; }
     }
 }

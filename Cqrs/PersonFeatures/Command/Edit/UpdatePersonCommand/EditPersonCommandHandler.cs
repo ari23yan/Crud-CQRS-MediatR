@@ -1,4 +1,6 @@
-﻿using Cqrs.Context;
+﻿using AutoMapper;
+using Cqrs.Context;
+using Cqrs.Model;
 using MediatR;
 
 namespace Cqrs.PersonFeatures.Command.Edit.UpdatePersonCommand
@@ -6,9 +8,11 @@ namespace Cqrs.PersonFeatures.Command.Edit.UpdatePersonCommand
     public class EditPersonCommandHandler : IRequestHandler<EditPersonCommandModel, Guid>
     {
         private readonly CqrsDbContext _context;
-        public EditPersonCommandHandler(CqrsDbContext context)
+        private readonly IMapper _mapper;
+        public EditPersonCommandHandler(CqrsDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(EditPersonCommandModel request, CancellationToken cancellationToken)
@@ -20,6 +24,7 @@ namespace Cqrs.PersonFeatures.Command.Edit.UpdatePersonCommand
             }
             else
             {
+                //var personResult = _mapper.Map<EditPersonCommandModel, Person>(request);
                 person.Name = request.Name;
                 person.Family = request.Family;
                 person.NationalCode = request.NationalCode;
