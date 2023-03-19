@@ -1,9 +1,15 @@
 using Cqrs;
+using Cqrs.BackGroundWorker.AddReadPerson;
+using Cqrs.BackGroundWorker.DeleteReadPerosn;
+using Cqrs.BaseChannel;
 using Cqrs.Context;
+using Cqrs.ReadRepositories;
+using Cqrs.Repositories.WriteRepositories;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using System.Reflection;
 using ZymLabs.NSwag.FluentValidation;
 
@@ -40,6 +46,27 @@ builder.Services.AddSwaggerGen(c =>
 
 //    return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
 //});
+
+builder.Services.AddScoped<WritePersonRepository>();
+
+builder.Services.AddSingleton(typeof(ChannelQueue<>));
+
+
+#region Mongo Singleton Injection
+
+var mongoClient = new MongoClient("mongodb://localhost:27017");
+var mongoDatabase = mongoClient.GetDatabase("moviesdatabase");
+builder.Services.AddSingleton(mongoDatabase);
+
+#endregion
+
+
+builder.Services.AddScoped<ReadPersonRepository>();
+
+
+
+builder.Services.AddHostedService<AddReadModelWorker>();
+builder.Services.AddHostedService<DeleteReadPersonWorker>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
